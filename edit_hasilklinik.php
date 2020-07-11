@@ -1,82 +1,52 @@
 <?php
 include_once 'config/db.php';
 include_once 'ceklogin.php';
-// mengambil data pasien berdasarkan id
-if (!empty($_GET['id'])) {
-    # code...
-    $id_kunjungan= $_GET['id'];
-    $getpasien  = mysqli_query($link, "SELECT * FROM kunjungan_klinik k
-    LEFT JOIN pasienklinik p
-    ON k.no_rm=p.norm
-    WHERE k.id=$id_kunjungan");
-    $datapasien = mysqli_fetch_array($getpasien);
-}
-// end mengambil data
-
-// menyimpan data 
-if (!empty($_POST)) {
-    # code...
-     $id_kunjungan= $_GET['id']; 
-    //  $kode_produk= $_POST['kode_produk'];
-    //  $hasil_pemeriksaan= $_POST['hasil_pemeriksaan']; 
-    //  $keterangan= $_POST['keterangan'];
-    $sql="INSERT INTO hasil_klinik
-          (id_kunjungan, kode_produk, hasil_pemeriksaan, keterangan)
-          VALUES ";
-    $jumlahbaris = count($_POST['hasil']);
-    for ($i=0; $i < ($jumlahbaris); $i++) { 
-        $produk = $_POST['produk'][$i];
-        $hasil = $_POST['hasil'][$i];
-        $keterangan = $_POST['keterangan'][$i];
-        $sql .= "('$id_kunjungan', '$produk', '$hasil', '$keterangan')";
-
-        if ($i!=($jumlahbaris-1)) {
-            $sql .= ',';
-        }
-
+// start mengambil data pasien berdasarkan id
+    if(!empty($_GET['id'])){
+        $idkunjungan=$_GET['id'];
+        $slq=mysqli_query($link, "SELECT k.*, p.nama, p.jenis_kelamin, p.norm
+        FROM kunjungan_klinik k
+        LEFT JOIN pasienklinik p
+        ON k.no_rm=p.norm
+        
+        WHERE k.id=$idkunjungan");
+        $data=mysqli_fetch_array($slq);
     }
-    
-    // echo $sql;
-    // var_dump($_POST);
-//      $cekkode = mysqli_query($link, "SELECT * FROM kunjungan_klinik k
-//      LEFT JOIN pasienklinik p 
-//      ON k.no_rm=p.norm
-//      WHERE id_kunjungan='$norm'");
+// end 
 
-//  $jum     = mysqli_num_rows($cekkode);
-//  if ($jum==0) {
+    if (!empty($_POST)) {
+        # code...
 
-    //  $sql="INSERT INTO hasil_klinik
-    //      (id_kunjungan, kode_produk, hasil_pemeriksaan, keterangan)
-    //      VALUES 
-    //      ('$id_kunjungan','$kode_produk','$hasil_pemeriksaan','$keterangan')";
-
-     $insert= mysqli_query($link, $sql);
-     if ($insert) {
-        $sql2 = "UPDATE kunjungan_klinik
-        SET
-        entry = 1
-        WHERE
-        id= $id_kunjungan";
-        $update= mysqli_query($link, $sql2);
+        // var_dump($_POST);
+        
+        // exit();
+        $jumlahbaris = count($_POST['id_hasil']);
+        // echo $jumlahbaris;
+        $sqlupdate="";
+        for ($i=0; $i < $jumlahbaris; $i++) { 
+            $id_hasil = $_POST['id_hasil'][$i];
+            $hasil = $_POST['hasil'][$i];
+            $keterangan = $_POST['keterangan'][$i];
+            $sqlupdate .= "UPDATE hasil_klinik SET
+            hasil_pemeriksaan= '$hasil',
+            keterangan= '$keterangan'
+            WHERE id_hasilklinik= $id_hasil ; ";
+        }
+        // echo $sqlupdate;
+        // exit();
+        
+        //sama dengan table di database query update baru tdk ikut atas
+        $update = mysqli_multi_query($link, $sqlupdate);
         if ($update) {
-            header('location: pemeriksaan_klinik.php?add');
+            // echo "sukses";
+            header('location: pemeriksaan_klinik.php?updated');
         }
         else{
-            header('location: entypemeriksaan_klinik.php?err');
-            printf("Query failed: %s\n,%s", mysqli_error($link),$sql2);
+            //echo $sqlupdate;
+
+            //  header('location: edit_pasienklinik.php?err&id='.$id);
         }
-         
-     }
-      else{
-         header('location: entypemeriksaan_klinik.php?err');
-         printf("Query failed: %s\n,%s", mysqli_error($link),$sql);
-     }
- 
-//  else{
-//      header('location: pemeriksaan_klinik.php?err=already');
-//  }
-}
+    }
 ?>
 <!-- end -->
 
@@ -147,12 +117,12 @@ if (!empty($_POST)) {
             <!-- Bread crumb and right sidebar toggle -->
             <div class="row page-titles">
                 <div class="col-md-5 align-self-center">
-                    <h3 class="text-themecolor">Edit Hasil Klinik</h3>
+                    <h3 class="text-themecolor">Edit Hasil Klini</h3>
                 </div>
                 <div class="col-md-7 align-self-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                        <li class="breadcrumb-item active">Edit Hasil Klinik</li>
+                        <li class="breadcrumb-item active">Edit Hasil Pemeriksaan Klinik</li>
                     </ol>
                 </div>
             </div>
@@ -160,6 +130,7 @@ if (!empty($_POST)) {
                     
             <!-- Container fluid  -->
             <?php
+            //tes tes tes
             include_once 'config/lookup_tarif.php';
             ?>
             
@@ -183,7 +154,7 @@ if (!empty($_POST)) {
                                                         <label for="example-text-input" class="col-lg-3 col-form-label">No RM</label>
                                                         <div class="col-lg-4">
                                                             <input class="form-control" type="text" name="norm" readonly value="<?php
-                                                            echo $datapasien['norm'];
+                                                            echo $data['norm'];
                                                             ?>">
                                                         </div>
                                                     </div>
@@ -192,8 +163,8 @@ if (!empty($_POST)) {
                                                     <div class="form-group row">
                                                         <label for="example-text-input" class="col-lg-4 col-form-label">No. Kunjungan</label>
                                                         <div class="col-lg-4">
-                                                            <input class="form-control" type="text" name="id_kunjungan" readonly value="<?php
-                                                            echo $datapasien['no_kunjungan'];
+                                                            <input class="form-control" type="text" name="no_kunjungan" readonly value="<?php
+                                                            echo $data['no_kunjungan'];
                                                             ?>">
                                                         </div>
                                                     </div>
@@ -205,8 +176,8 @@ if (!empty($_POST)) {
                                                     <div class="form-group row">
                                                         <label for="example-text-input" class="col-lg-3 col-form-label">Nama</label>
                                                         <div class="col-lg-9">
-                                                            <input class="form-control" type="text" name="rm" readonly value="<?php
-                                                            echo $datapasien['nama'];
+                                                            <input class="form-control" type="text" name="nama" readonly value="<?php
+                                                            echo $data['nama'];
                                                             ?>">
                                                         </div>
                                                     </div>
@@ -215,9 +186,8 @@ if (!empty($_POST)) {
                                                     <div class="form-group row">
                                                         <label for="example-text-input" class="col-lg-4 col-form-label">Jenis Kelamin</label>
                                                         <div class="col-lg-8">
-                                                            <input class="form-control" type="text" name="alamat
-                                                            " readonly value="<?php
-                                                            echo $datapasien['jenis_kelamin'];
+                                                            <input class="form-control" type="text" name="jenis_kelamin" readonly value="<?php
+                                                            echo $data['jenis_kelamin'];
                                                             ?>">
                                                         </div>
                                                     </div>
@@ -231,9 +201,9 @@ if (!empty($_POST)) {
                                 <!-- form baru -->
                                 <div class="card">
                                     <div class="card-body">
-                                <h3> EDIT HASIL PEMERIKSAAN KLINIK &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   Tanggal: &nbsp; <?php echo date('d-M-Y') ;?></h3>
+                                <h3> EDIT DATA HASIL PEMERIKSAAN KLINIK &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   Tanggal: &nbsp; <?php echo date('d-M-Y') ;?></h3>
                                 <form action="" method="POST">
-                                <table class="table table-m table-bordered m-t-20 color-table purple-table">
+                                <table class="table table-m table-bordered m-t-20 color-table inverse-table">
                                     <thead>
                                         <th>Kode</th>
                                         <th>Jenis Pemeriksaa</th>
@@ -243,39 +213,46 @@ if (!empty($_POST)) {
                                     </thead>
                                     <tbody>
                                         <?php
-                                            $sql="SELECT * FROM transaksi_klinik t
-                                            LEFT JOIN produk_tarif p
-                                            ON t.kode_tarif=p.kode_produk
-                                            -- LEFT JOIN nilainormal n
-                                            -- ON p.kode_produk=n.kode_nrujukan
-                                            WHERE id_kunjungan=$id_kunjungan
-                                            AND p.pemeriksaan=1";
-                                            $tampil=mysqli_query($link,$sql);
-                                            while($row=mysqli_fetch_array($tampil)){
+                                            $sqlhasilklinik=mysqli_query($link, 
+                                            "SELECT h.id_kunjungan, 
+                                            h.id_hasilklinik, 
+                                            h.kode_produk, 
+                                            t.nama_produk, 
+                                            h.nilai_normal, 
+                                            h.hasil_pemeriksaan, 
+                                            h.keterangan
+                                            FROM hasil_klinik h      
+                                            LEFT JOIN produk_tarif t
+                                            ON h.kode_produk=t.kode_produk
+                                            
+                                            WHERE h.id_kunjungan=$idkunjungan");
+                                            while ($data2 = mysqli_fetch_assoc($sqlhasilklinik)) {
                                         ?>
                                         
                                         <tr>
                                             <td>
                                                 <?php 
-                                                    echo $row['kode_tarif'];
+                                                    echo $data2['kode_produk'];
                                                 ?>
-                                                <input class="d-none" type="text" name="produk[]" value="<?=$row['kode_tarif'];?>">
+                                                <input class="d-none" type="text" name="id_hasil[]" value="<?=$data2['id_hasilklinik'];?>">
                                             </td>
-                                            <td><?php echo $row['nama_produk']?></td>
+
                                             <td>
-                                            <?php 
-                                                echo $row['min_rujukan'];
-                                                echo '-';
-                                                echo $row['max_rujukan'];
-                                                echo ' ';
-                                                echo $row['satuan'];
-                                            ?>
+                                                <?php 
+                                                    echo $data2['nama_produk'];
+                                                ?>
+                                                <input class="d-none" type="text" name="nama_produk[]" value="<?=$data2['nama_produk'];?>">
+                                            </td>
+                                            
+                                            <td>
+                                            <input  name="nilainormal[]" readonly type="text" value="<?php echo $data2['nilai_normal'];?>">
+                                            
                                             </td>
                                             <td>
-                                                <input name="hasil[]" type="text">
+                                                <input name="hasil[]" type="text" value="<?php echo $data2['hasil_pemeriksaan'];?>">
                                             </td>
                                             <td>
-                                                <input name="keterangan[]" type="text">
+                                                <input name="keterangan[]" type="text" value="<?php echo $data2['keterangan'];?>">
                                             </td>
                                         </tr>
                                         <?php

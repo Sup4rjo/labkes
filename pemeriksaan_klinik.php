@@ -148,7 +148,7 @@ include_once 'ceklogin.php';
                                                 <?php 
                                                     if ($row['entry']==1) {
                                                         ?>
-                                                        <a href="edit_hasilklinik.php?id=<?php echo $row['id']?>">
+                                                        <a href="edit_hasilklinik.php?id=<?php echo $row['idkunjungan']?>">
                                                             <img src="assets/images/yedit10.png" data-toggle="tooltip" data-placement="top" title="Edit Hasil">
                                                         </a>
                                                         <?php

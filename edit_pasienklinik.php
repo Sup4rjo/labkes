@@ -26,7 +26,7 @@ include_once 'ceklogin.php';
         $umur=0;
         // var_dump($_POST);
         
-        //sama dengan table di database
+        //sama dengan table di database query update baru tdk ikut atas
         $sql="UPDATE pasienklinik
         SET 
         norm= '$norm',
@@ -53,6 +53,7 @@ include_once 'ceklogin.php';
         }
     }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
