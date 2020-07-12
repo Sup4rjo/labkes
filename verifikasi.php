@@ -14,7 +14,7 @@ include_once 'ceklogin.php';
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/x-icon" sizes="16x16" href="assets/images/favicon.ico">
-    <title>Pemeriksaan Klinik - Labkes Ungaran</title>
+    <title>Verifikasi hasil</title>
     <!-- Bootstrap Core CSS -->
     <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -129,7 +129,7 @@ include_once 'ceklogin.php';
                                             <td>
                                                 <!-- <a href="entrypemeriksaan_klinik.php?id=<?php echo $row['id']?>">  -->
                                                <!-- entry hasil -->
-                                                <?php
+                                                <!-- <?php
                                                     if ($row['entry']==1) {
                                                         ?>
                                                             <img src="assets/images/addhp1.png" data-toggle="tooltip" data-placement="top" title="Sudah Di Entry"> 
@@ -142,10 +142,10 @@ include_once 'ceklogin.php';
                                                         </a>
                                                         <?php
                                                     }
-                                                ?>
+                                                ?> -->
                                                 
                                                 <!-- edit -->
-                                                <?php 
+                                                <!-- <?php 
                                                     if ($row['entry']==1) {
                                                         ?>
                                                         <a href="edit_hasilklinik.php?id=<?php echo $row['idkunjungan']?>">
@@ -158,13 +158,13 @@ include_once 'ceklogin.php';
                                                             <img src="assets/images/yedit10.png" data-toggle="tooltip" data-placement="top" title="Belum dientry">
                                                         <?php
                                                     }
-                                                ?>
+                                                ?> -->
                                                 
                                                 <!-- verifikasi -->
-                                                <!-- <?php 
+                                                <?php 
                                                     if ($row['entry']==1) {
                                                         ?>
-                                                        <a href="entrypemeriksaan_klinik.php?id=<?php echo $row['id']?>">
+                                                        <a href="verifikasi_proses.php?id=<?php echo $row['id']?>">
                                                             <img src="assets/images/verif.png" data-toggle="tooltip" data-placement="top" title="Verifikasi">
                                                         </a>
                                                     <?php
@@ -174,10 +174,10 @@ include_once 'ceklogin.php';
                                                             <img src="assets/images/verif.png" data-toggle="tooltip" data-placement="top" title="Belum dientry">
                                                         <?php
                                                     }
-                                                ?> -->
+                                                ?>
 
                                                 <!-- print -->
-                                                <?php
+                                                <!-- <?php
                                                     if ($row['verifikasi']==1) {
                                                         if ($row['print']==1) {
                                                             ?>
@@ -200,7 +200,7 @@ include_once 'ceklogin.php';
                                                         <img src="assets/images/hprint10.png" data-toggle="tooltip" data-placement="top" title="Belum diverifikasi"> 
                                                         <?php
                                                     }
-                                                 ?>   
+                                                 ?>    -->
 
                                                 <!-- <div class="preview"> <i class="icon-pencil"></i> icon-pencil </div> -->
                                                 <!-- <a href="hapusppu.php?id=<?php //echo $row['id']?>">
