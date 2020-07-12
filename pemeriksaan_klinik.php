@@ -94,7 +94,7 @@ include_once 'ceklogin.php';
                                 <hr>
 
                                 <a href="historicalpemeriksaan_klinik.php">
-                                    <td><input name="Submit" type="image" value="add data"  src="assets/images/hpemeriksaan.png"></td>
+                                    <td><input name="Submit" type="image" value="add data"  src="assets/images/hpemeriksaan2.png"></td>
                                 </a>
                                 
                                 <table class="table table-m table-bordered m-t-20 color-table primary-table">

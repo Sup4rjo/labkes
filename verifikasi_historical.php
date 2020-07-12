@@ -84,8 +84,8 @@ include_once 'ceklogin.php';
                             <div class="card-body">
                                 
                                 <hr>
-                                <a href="pemeriksaan_klinik.php">
-                                    <td><input name="Submit" type="image" value="add data"  src="assets/images/kembali2.png"></td>
+                                <a href="verifikasi.php">
+                                    <td><input name="Submit" type="image" value="add data"  src="assets/images/kembali-hujau.png"></td>
                                 </a>
 
                                 <table class="table table-m table-bordered m-t-20 color-table purple-table">
@@ -123,8 +123,8 @@ include_once 'ceklogin.php';
                                             </td>
                                             <td><?php echo $row['total_bayar']?></td>
                                             <td>
-                                                <a href="printulang_pemeriksaanklinik.php?id=<?php echo $row['id_kunjungan']?>">
-                                                    <img src="assets/images/hprint10.png" data-toggle="tooltip" data-placement="top" title="Print Ulang Nota">
+                                                <a href="verifikasi_cetakulang.php?id=<?php echo $row['id_kunjungan']?>">
+                                                    <img src="assets/images/hprint10.png" data-toggle="tooltip" data-placement="top" title="Print Ulang Hasil">
                                                 </a>
                                             
                                                 <!-- <div class="preview"> <i class="icon-pencil"></i> icon-pencil </div> -->
